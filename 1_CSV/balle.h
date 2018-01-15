@@ -14,4 +14,8 @@ typedef struct Balle_decl
 
 Balle chargerBalle(char * chemin);
 
+int majPosition(Balle * balle, float dt);
+
+void printBalle(Balle b);
+
 #endif
