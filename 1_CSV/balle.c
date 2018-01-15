@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "balle.h"
 
-
 Balle chargerBalle(char * chemin)
 {
 	Balle b;
@@ -14,6 +13,17 @@ Balle chargerBalle(char * chemin)
 	b.acceleration.x = 0; b.acceleration.y = 0;
 	fclose(file);
 	return b;
+}
+
+int majPosition(Balle * balle, float dt)
+{
+	Vecteur forces = addVect(creerVect(0, balle->masse * -9.81), multScalVect(-balle->coeffriction, balle->vitesse));
+	balle->acceleration = multScalVect(1/balle->masse, forces);
+	balle->vitesse = addVect(balle->vitesse, multScalVect(dt, balle->acceleration));
+	balle->position = addVect(balle->position, multScalVect(dt, balle->vitesse));
+	if (balle->position.y < 0)
+		balle->position.y = 0;
+	return 0;
 }
 
 void printBalle(Balle b)
