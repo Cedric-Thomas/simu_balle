@@ -21,7 +21,7 @@ typedef struct
 
 Balle chargerBalle(char * chemin);
 
-int majPosition(Balle * balle, float dt);
+int majPosition(Balle *balle, AttracteurList *pAttrList, float dt);
 
 void initAttracteurList(AttracteurList * pAttrList);
 

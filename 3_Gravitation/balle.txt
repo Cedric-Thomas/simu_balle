@@ -1,4 +1,4 @@
 masse 0.5
-fCoef 0.9
+fCoef 0.0
 position 0 0
 vitesse 10.0 10.0
