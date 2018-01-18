@@ -1,70 +1,66 @@
-
 #include <stdlib.h>
 #include <unistd.h>
 #include <math.h>
-#include"sdl_stuff.h"
 
+#include "sdl_stuff.h"
 #include "decl.h"
 #include "fpstimer.h"
+#include "vecteur.h"
+#include "balle.h"
 
+Balle gBalleTab[NB_BALLES];
 
-
-// juste pour le basecode, a remplacer par le tableau de balles
-float gX=0.0f,gY=0.0f;
-
-
-// fonction appell�e lorsque le bouton de la souris est maintenu
-void dragSouris(float x, float y)
+void dragSouris(float x, float y)		// Fonction permettant de déplacer les balles avec la souris
 {
-    gX=x;
-    gY=y;
+   gBalleTab[NB_BALLES - 1].position.x = x;
+   gBalleTab[NB_BALLES - 1].position.y = y;
+   gBalleTab[NB_BALLES - 1].vitesse.x = 0;
+   gBalleTab[NB_BALLES - 1].vitesse.y = 0;
 }
 
 
 
 int main ( int argc, char** argv )
 {
-    float alpha = 0.0f;
+	int i;
+   Balle point;
+   point.ballePrecedente = point.balleSuivante = NULL;		// Initialisation des balles à NULL
 
-    if(!sdl_startup())
-        return -1;
+   if(!sdl_startup())
+	   return -1;
 
-    fpsInit();
+	fpsInit();
+	point = chargerBalle("balle.txt");		// Récupération des valeurs dans le fichier de config
 
-    // TODO :
-    // creer les balles
-    // ....
+   for (i = 0; i < NB_BALLES; i++)		// Gestion des position des balles précedente, suivante...
+   {
+      gBalleTab[i] = point;
+      gBalleTab[0].ballePrecedente = NULL;
+      gBalleTab[0].balleSuivante = &gBalleTab[1];
+      gBalleTab[NB_BALLES - 1].ballePrecedente = &gBalleTab[NB_BALLES - 2];
+      gBalleTab[NB_BALLES - 1].balleSuivante = NULL;
+   }
 
-    // relier les balles entre elles
-    // ....
+
+   for (i = 1; i < NB_BALLES-1; i++)
+   {
+	  gBalleTab[i].ballePrecedente = &gBalleTab[i-1];
+      gBalleTab[i].balleSuivante = &gBalleTab[i+1];
+   }
 
 
-    // program main loop
-    do
-    {
-        int i;
-        fpsStep();
-
-        // TODO : mettre a jour les balle
-
-        // la balle nb 0 est manipul�e a la souris a titre d'exemple
-        sdl_setBallPosition(0,gX,gY);
-
-        // les autres sont mises a jour differement
-        alpha+=3.14f / 2 * fpsGetDeltaTime();
-        for(i=1; i<NB_BALLES; i++)
-        {
-            //TODO : maj de la balle
-            float x ,y;
-
-            x = 0.5+0.3f*cosf(alpha+0.1f*i);
-            y = 0.5+0.3f*sinf(alpha+0.4f*i);
-            sdl_setBallPosition(i,x,y);
-        }
-    }
-    while(sdl_loop());
-    // end main loop
-
-    sdl_clean();
-    return 0;
+   do
+   {
+   	int i;
+      fpsStep();
+		for(i=0; i<NB_BALLES; i++)
+      {
+      	if (majPosition(&gBalleTab[i], fpsGetDeltaTime())) //mise à jour de la position des balles
+         	return 1;
+         sdl_setBallPosition(i,gBalleTab[i].position.x,gBalleTab[i].position.y); //mise à jour de la position sur la SDL
+      }
+   }
+	while(sdl_loop());
+	sdl_clean();
+   return 0;
 }

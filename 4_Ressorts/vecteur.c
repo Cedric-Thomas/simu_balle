@@ -14,7 +14,7 @@ Vecteur creerVect(float x, float y)		// Fonction permettant de créer un vecteur
 
 Vecteur multScalVect(float s, Vecteur v)		// fonction permettant de faire un produit scalaire entre un vecteur et un scalaire passés à l'appel de fonction
 {
-	v.x *= s;
+   v.x *= s;
    v.y *= s;
    return v;
 }
@@ -22,7 +22,7 @@ Vecteur multScalVect(float s, Vecteur v)		// fonction permettant de faire un pro
 
 Vecteur addVect(Vecteur v1, Vecteur v2)		// Fonction permettant de faire une addition entre deux vecteurs passés à l'appel de fonction
 {
-	Vecteur v;
+   Vecteur v;
    v.x = v1.x + v2.x;
    v.y = v1.y + v2.y;
    return v;
@@ -31,6 +31,8 @@ Vecteur addVect(Vecteur v1, Vecteur v2)		// Fonction permettant de faire une add
 
 Vecteur normaliseVect(Vecteur v)		// Fonction permettant de normaliser un vecteur, de donner sa direction
 {
+	if (normVect(v) == 0)
+		return v;
 	float longueur = normVect(v);
    v.x /= longueur;
    v.y /= longueur;

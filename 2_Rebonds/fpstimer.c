@@ -21,7 +21,7 @@
 
 
     // get elapsed time since init (in seconds)
-    float fpsGetElapsed()
+	 float fpsGetElapsed()
     {
         return (float) (gLast - gAppInit)/1000.0f;
     }

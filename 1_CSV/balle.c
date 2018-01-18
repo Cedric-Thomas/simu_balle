@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "balle.h"
 
-Balle chargerBalle(char * chemin)
+Balle chargerBalle(char * chemin)		// Fonction pour récupérer les valeurs de masse vitesse etc... dans le fichier de config
 {
 	Balle b;
 	FILE* file = fopen(chemin, "r");
@@ -15,7 +15,7 @@ Balle chargerBalle(char * chemin)
 	return b;
 }
 
-int majPosition(Balle * balle, float dt)
+int majPosition(Balle * balle, float dt)			// Fonction pour mettre a jour la position, vitesse, accélération de la balle en fonction de dt et des forces
 {
 	Vecteur forces = addVect(creerVect(0, balle->masse * -9.81), multScalVect(-balle->coeffriction, balle->vitesse));
 	balle->acceleration = multScalVect(1/balle->masse, forces);
@@ -24,13 +24,4 @@ int majPosition(Balle * balle, float dt)
 	if (balle->position.y < 0)
 		balle->position.y = 0;
 	return 0;
-}
-
-void printBalle(Balle b)
-{
-	printf("masse: %f\n", b.masse);
-	printf("fCoef: %f\n", b.coeffriction);
-	printf("position: x:%f   y:%f\n", b.position.x, b.position.y);
-	printf("vitesse: x:%f   y:%f\n", b.vitesse.x, b.vitesse.y);
-	printf("acceleration: x:%f   y:%f\n", b.acceleration.x, b.acceleration.y);
 }
